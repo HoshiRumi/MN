@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iomanip>
 
-using namespace std;
+
 
 class SecantSolver {
 private:
@@ -16,7 +16,7 @@ private:
     }
 
     double d2f(double x) {
-        return 6*x - 8; 
+        return 6*x - 8;
     }
 
 public:
@@ -40,7 +40,6 @@ public:
     double solve() {
         iterations = 0;
 
-
         double x0, x1;
         if (f(a) * d2f(a) > 0) {
             x0 = a;
@@ -52,14 +51,17 @@ public:
 
         double x_prev = x0;
         double x_curr = x1;
-        double x_next;
+        double x_next = x_curr;
+
+        // Заголовок таблицы
+        std::cout << "\nIter   x_prev        x_curr        x_next        |x_next-x_curr|   f(x_next)\n";
 
         while (iterations < max_iter) {
             double f_prev = f(x_prev);
             double f_curr = f(x_curr);
 
             if (f_curr - f_prev == 0) {
-                cerr << "Division by zero in Secant method" << endl;
+                std::cerr << "Division by zero in Secant method" << std::endl;
                 return x_curr;
             }
 
@@ -67,6 +69,15 @@ public:
             double diff = fabs(x_next - x_curr);
 
             iterations++;
+
+            // Вывод текущей итерации
+            std::cout << iterations << "   "
+                 << std::fixed << std::setprecision(6)
+                 << x_prev << "   "
+                 << x_curr << "   "
+                 << x_next << "   "
+                 << diff << "   "
+                 << f(x_next) << "\n";
 
             if (diff < eps) break;
 
@@ -85,12 +96,12 @@ int main() {
 
 start:
 
-    cout << "Enter the left border a: ";
-    cin >> a;
-    cout << "Enter the right border b: ";
-    cin >> b;
-    cout << "Enter eps accuracy: ";
-    cin >> eps;
+    std::cout << "Enter the left border a: ";
+    std::cin >> a;
+    std::cout << "Enter the right border b: ";
+    std::cin >> b;
+    std::cout << "Enter eps accuracy: ";
+    std::cin >> eps;
 
     solver.setInitialPoints(a, b);
     solver.setEpsilon(eps);
@@ -98,18 +109,18 @@ start:
 
     double root = solver.solve();
 
-    cout << fixed << setprecision(6);
-    cout << "\nRoot found: x = " << root << endl;
-    cout << "f(x) = " << (root*root*root - 4*root*root + 5*root - 3) << endl;
-    cout << "Iterations: " << solver.getIterations() << endl;
+    std::cout << std::fixed << std::setprecision(6);
+    std::cout << "\nRoot found: x = " << root << std::endl;
+    std::cout << "f(x) = " << (root*root*root - 4*root*root + 5*root - 3) << std::endl;
+    std::cout << "Iterations: " << solver.getIterations() << std::endl;
 
-    cout << "\nWould you like to solve another equation? (y/n): ";
-    cin >> choice;
+    std::cout << "\nWould you like to solve another equation? (y/n): ";
+    std::cin >> choice;
 
     if (choice == 'y' || choice == 'Y') {
         goto start;
     }
 
-    cout << "Go read python books" << endl;
+    std::cout << "Go read python books" << std::endl;
     return 0;
 }
