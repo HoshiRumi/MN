@@ -2,9 +2,9 @@
 #include <cmath>
 #include <iomanip>
 
-using namespace std;
 
-class BisectionSolver {
+
+class NewtonSolver {
 private:
     double a, b;
     double eps;
@@ -12,7 +12,17 @@ private:
     int iterations;
 
     double f(double x) {
-        return x*x*x - 4*x*x + 5*x - 3;  // пример: x^3 - 4x^2 + 5x - 3 = 0
+        return x*x*x - 4*x*x + 5*x - 3;
+    }
+
+
+    double df(double x) {
+        return 3*x*x - 8*x + 5;
+    }
+
+
+    double d2f(double x) {
+        return 6*x - 8;
     }
 
 public:
@@ -34,64 +44,73 @@ public:
     }
 
     double solve() {
-        if (f(a) * f(b) >= 0) {
-            cerr << "Error: the function does not change the sign to [" << a << ", " << b << "]" << endl;
-            iterations = 0;
-            return NAN;
-        }
-
-        double c;
         iterations = 0;
 
-        while ((b - a) / 2.0 > eps && iterations < max_iter) {
-            c = (a + b) / 2.0;
+        double x = (f(a) * d2f(a) > 0) ? a : b;
+        double x_new;
 
-            if (f(a) * f(c) < 0) {
-                b = c;
-            } else {
-                a = c;
+        std::cout << std::fixed << std::setprecision(6);
+        // cout << "\nIterations of Newton's method:\n";
+        // cout << "i\t x_i\t\t f(x_i)\t\t |x_{i+1}-x_i|\n";
+
+        while (iterations < max_iter) {
+            double fx = f(x);
+            double dfx = df(x);
+
+            if (dfx == 0) {
+                std::cerr << "Derivative is zero, cannot continue Newton's method." << std::endl;
+                return x;
             }
+
+            x_new = x - fx / dfx;
+            double diff = fabs(x_new - x);
+
+            // Вывод таблицы (по желанию)
+            // cout << iterations+1 << "\t " << x << "\t " << fx << "\t " << diff << "\n";
+
             iterations++;
+
+            if (diff < eps) break;
+
+            x = x_new;
         }
-        return (a + b) / 2.0;
+
+        return x_new;
     }
 };
 
 int main() {
-    BisectionSolver solver;
-    double left, right, eps;
+    NewtonSolver solver;
+    double a, b, eps;
     char choice;
 
-start: // ← метка для возврата
+start:
 
-    cout << "Enter the left border  a: ";
-    cin >> left;
-    cout << "Enter the right border b: ";
-    cin >> right;
-    cout << "Enter eps accuracy: ";
-    cin >> eps;
+    std::cout << "Enter the left border a: ";
+    std::cin >> a;
+    std::cout << "Enter the right border b: ";
+    std::cin >> b;
+    std::cout << "Enter eps accuracy: ";
+    std::cin >> eps;
 
-    solver.setInterval(left, right);
+    solver.setInterval(a, b);
     solver.setEpsilon(eps);
     solver.setMaxIter(1000);
 
     double root = solver.solve();
 
-    if (!isnan(root)) {
-        cout << fixed << setprecision(6);
-        cout << "Root found: x = " << root << endl;
-        cout << "f(x) = " << (root*root*root - 4*root*root + 5*root - 3) << endl;
-        cout << "Iterations: " << solver.getIterations() << endl;
-    }
+    std::cout << std::fixed << std::setprecision(6);
+    std::cout << "\nRoot found: x = " << root << std::endl;
+    std::cout << "f(x) = " << (root*root*root - 4*root*root + 5*root - 3) << std::endl;
+    std::cout << "Iterations: " << solver.getIterations() << std::endl;
 
-    cout << "\nWould you like to solve another equation? (y/n): ";
-    cin >> choice;
+    std::cout << "\nWould you like to solve another equation? (y/n): ";
+    std::cin >> choice;
 
     if (choice == 'y' || choice == 'Y') {
         goto start;
     }
 
-    cout << "Go read python books" << endl;
+    std::cout << "Go read python books" << std::endl;
     return 0;
 }
-
