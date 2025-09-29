@@ -54,7 +54,7 @@ public:
         double x_next = x_curr;
 
         // Заголовок таблицы
-        std::cout << "\nIter   x_prev        x_curr        x_next        |x_next-x_curr|   f(x_next)\n";
+        // std::cout << "\nIter   x_prev        x_curr        x_next        |x_next-x_curr|   f(x_next)\n";
 
         while (iterations < max_iter) {
             double f_prev = f(x_prev);
@@ -70,14 +70,14 @@ public:
 
             iterations++;
 
-            // Вывод текущей итерации
-            std::cout << iterations << "   "
-                 << std::fixed << std::setprecision(6)
-                 << x_prev << "   "
-                 << x_curr << "   "
-                 << x_next << "   "
-                 << diff << "   "
-                 << f(x_next) << "\n";
+            // // Вывод текущей итерации
+            // std::cout << iterations << "   "
+            //      << std::fixed << std::setprecision(6)
+            //      << x_prev << "   "
+            //      << x_curr << "   "
+            //      << x_next << "   "
+            //      << diff << "   "
+            //      << f(x_next) << "\n";
 
             if (diff < eps) break;
 
