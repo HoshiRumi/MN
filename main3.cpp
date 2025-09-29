@@ -38,16 +38,15 @@ public:
     double solve() {
         iterations = 0;
 
-        double x0;
+        double x0,x1;
         if (f(a) * d2f(a) > 0) {
             x0 = a;
+            x1 = a+eps;
         } else {
             x0 = b;
+            x1 = b-eps;
         }
-
-        // Вторая точка сдвигается на eps
-        double x1 = x0 + eps;
-
+        
         double x_prev = x0;
         double x_curr = x1;
         double x_next = x_curr;
@@ -110,3 +109,4 @@ start:
     std::cout << "Go read python books" << std::endl;
     return 0;
 }
+
