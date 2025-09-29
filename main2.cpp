@@ -1,4 +1,4 @@
-~#include <iostream>
+#include <iostream>
 #include <cmath>
 #include <iomanip>
 
@@ -94,4 +94,4 @@ start: // ← метка для возврата
     cout << "Go read python books" << endl;
     return 0;
 }
-~
+
