@@ -2,8 +2,6 @@
 #include <cmath>
 #include <iomanip>
 
-using namespace std;
-
 class BisectionSolver {
 private:
     double a, b;
@@ -35,7 +33,8 @@ public:
 
     double solve() {
         if (f(a) * f(b) >= 0) {
-            cerr << "Error: the function does not change the sign to [" << a << ", " << b << "]" << endl;
+            std::cerr << "Error: the function does not change the sign on ["
+                      << a << ", " << b << "]" << std::endl;
             iterations = 0;
             return NAN;
         }
@@ -43,8 +42,19 @@ public:
         double c;
         iterations = 0;
 
+
+        std::cout << "\nIter   a           b           c           f(c)\n";
+
         while ((b - a) / 2.0 > eps && iterations < max_iter) {
             c = (a + b) / 2.0;
+
+
+            std::cout << iterations + 1 << "   "
+                      << std::fixed << std::setprecision(6)
+                      << a << "   "
+                      << b << "   "
+                      << c << "   "
+                      << f(c) << "\n";
 
             if (f(a) * f(c) < 0) {
                 b = c;
@@ -62,14 +72,14 @@ int main() {
     double left, right, eps;
     char choice;
 
-start: // ← метка для возврата
+start:
 
-    cout << "Enter the left border  a: ";
-    cin >> left;
-    cout << "Enter the right border b: ";
-    cin >> right;
-    cout << "Enter eps accuracy: ";
-    cin >> eps;
+    std::cout << "Enter the left border  a: ";
+    std::cin >> left;
+    std::cout << "Enter the right border b: ";
+    std::cin >> right;
+    std::cout << "Enter eps accuracy: ";
+    std::cin >> eps;
 
     solver.setInterval(left, right);
     solver.setEpsilon(eps);
@@ -77,20 +87,19 @@ start: // ← метка для возврата
 
     double root = solver.solve();
 
-    if (!isnan(root)) {
-        cout << fixed << setprecision(6);
-        cout << "Root found: x = " << root << endl;
-        cout << "f(x) = " << (root*root*root - 4*root*root + 5*root - 3) << endl;
-        cout << "Iterations: " << solver.getIterations() << endl;
+    if (!std::isnan(root)) {
+        std::cout << "\nRoot found: x = " << std::fixed << std::setprecision(6) << root << std::endl;
+        std::cout << "f(x) = " << (root*root*root - 4*root*root + 5*root - 3) << std::endl;
+        std::cout << "Iterations: " << solver.getIterations() << std::endl;
     }
 
-    cout << "\nWould you like to solve another equation? (y/n): ";
-    cin >> choice;
+    std::cout << "\nWould you like to solve another equation? (y/n): ";
+    std::cin >> choice;
 
     if (choice == 'y' || choice == 'Y') {
         goto start;
     }
 
-    cout << "Go read python books" << endl;
+    std::cout << "Go read python books" << std::endl;
     return 0;
 }
