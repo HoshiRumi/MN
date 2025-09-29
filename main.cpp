@@ -43,18 +43,18 @@ public:
         iterations = 0;
 
 
-        std::cout << "\nIter   a           b           c           f(c)\n";
+        // std::cout << "\nIter   a           b           c           f(c)\n";
 
         while ((b - a) / 2.0 > eps && iterations < max_iter) {
             c = (a + b) / 2.0;
 
 
-            std::cout << iterations + 1 << "   "
-                      << std::fixed << std::setprecision(6)
-                      << a << "   "
-                      << b << "   "
-                      << c << "   "
-                      << f(c) << "\n";
+            // std::cout << iterations + 1 << "   "
+            //           << std::fixed << std::setprecision(6)
+            //           << a << "   "
+            //           << b << "   "
+            //           << c << "   "
+            //           << f(c) << "\n";
 
             if (f(a) * f(c) < 0) {
                 b = c;
